@@ -13,6 +13,8 @@ int main() {
   SH1106 s;
   s.sendStart();
   s.sendAddr(SH1106_addr);
+  s.sendCommand(0xDA);
+  s.sendCommand(0x02);
   s.sendCommand(0xA8); // set multiplex
   s.sendCommand(0x00); // to 0
   s.sendCommand(0xD3); // set offset
