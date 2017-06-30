@@ -28,7 +28,7 @@ int main() {
     {
       for (size_t i = 0; i < 132; i++)
       {
-        s.sendRAM(0x01);
+        s.sendRAM(0xFF);
         _delay_ms(10);
       }
       _delay_ms(500);
