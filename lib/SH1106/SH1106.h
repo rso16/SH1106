@@ -12,6 +12,8 @@
 #include<math.h>
 #define DEBUG 1
 #define SH1106_addr 0x78
+#define oledWidth 128
+#define oledHight 64
 //#include<std.h>
 class SH1106
   {
@@ -24,5 +26,10 @@ class SH1106
         void    sendCommand(uint8_t command);
         void    sendData(uint8_t data);
         void    sendRAM(uint8_t data);
+        void    init();
+        void    DrawBuffer(uint8_t buffer[]);
+        void    fillBuffer(uint8_t input);
+
+        uint8_t buffer[oledHight * oledWidth];
   };
 #endif
