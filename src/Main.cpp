@@ -6,13 +6,15 @@
 #define dTime 100
 #define SLA_R 0xD1
 #define SLA_W 0xD0
-uint8_t buffer[oledHight * oledWidth];
+//uint8_t buffer[oledHight * oledWidth];
 //#define RTC_ADDRESS 0x68
 int main() {
   init();
   Serial.begin(9600);
-  SH1106 s;
-  s.init();
+  Serial.println("blyat");
+  //SH1106 s;
+  Serial.println("blyat");
+//  s.init();
 //   s.sendStart();
 //   s.sendAddr(SH1106_ADDR);
 // // should draw 5 lines but only the first is drawn.
@@ -31,10 +33,12 @@ int main() {
 //     }
 //     //_delay_ms(1000);
 //     s.sendStop();
-
-s.fillBuffer(0x00,&buffer);
-s.sendStart();
-s.DrawBuffer(buffer);
-s.sendStop();
+Serial.println("blyat");
+//s.fillBuffer(0x00,buffer);
+//s.sendStart();
+Serial.println("blyat");
+//s.DrawBuffer(buffer);
+//s.sendStop();
+_delay_ms(1000);
   return 1;
 }

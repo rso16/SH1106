@@ -32,7 +32,7 @@
     {
       TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
       while (!(TWCR &(1<<TWINT)));
-      //if(DEBUG){Serial.println(TWSR,HEX);};
+      if(DEBUG){Serial.println(TWSR,HEX);};
     }
     void SH1106::sendStop()
     {
@@ -44,7 +44,7 @@
       TWDR = addr;
       TWCR = (1<<TWINT) | (1<<TWEN);
       while (!(TWCR &(1<<TWINT)));
-      //if(DEBUG){Serial.println(TWSR,HEX);};
+      if(DEBUG){Serial.println(TWSR,HEX);};
     }
 
     void SH1106::sendData(uint8_t data)
@@ -53,7 +53,7 @@
       TWCR = (1<<TWINT) | (1<<TWEN);
       while (!(TWCR &  (1<<TWINT)));
 
-      //if(DEBUG){Serial.println(TWSR,HEX);};
+      if(DEBUG){Serial.println(TWSR,HEX);};
     }
 
     void SH1106::sendCommand(uint8_t command)
