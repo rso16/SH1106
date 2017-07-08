@@ -6,6 +6,9 @@
 #define dTime 100
 #define SLA_R 0xD1
 #define SLA_W 0xD0
+#define oledHight 100
+#define oledWidth 100
+
 uint8_t buffer[oledHight * oledWidth];
 //#define RTC_ADDRESS 0x68
 int main() {
@@ -32,7 +35,7 @@ int main() {
 //     //_delay_ms(1000);
 //     s.sendStop();
 
-s.fillBuffer(0x00,&buffer);
+s.fillBuffer(0x00, buffer);
 s.sendStart();
 s.DrawBuffer(buffer);
 s.sendStop();
