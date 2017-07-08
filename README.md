@@ -4,7 +4,4 @@ momentarily working :
 - sending start (i2c)
 - sending stop  (i2c)
 - sending commands (i2c)
-- sending data to the first line (i2c)
-
-problems :
-- only the first line works
+- sending data (i2c)

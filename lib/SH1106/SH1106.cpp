@@ -4,7 +4,7 @@
     void SH1106::init()
     {
       sendStart();
-      sendAddr(SH1106_addr);
+      sendAddr(SH1106_ADDR);
       sendCommand(0x0ae);
       sendCommand(0x0d5);
       sendCommand(0x80);
@@ -68,13 +68,33 @@
       sendData(data);
     }
 
+    void SH1106::transferRAM(uint8_t data)
+    {
+      sendStart();
+      sendData(0xC0);
+      sendData(data);
+      sendStop();
+    }
+
     void SH1106::DrawBuffer(uint8_t buffer[])
     {
+        uint8_t data_byte;
+        for (size_t page = 0; page < maxPages * 8; page += 8) {
+          for (size_t x = 0; x < oledWidth; x++) {
+              data_byte = 0;
+              for (size_t y = 0; y < 8; y++)
+              {
+                    data_byte += buffer[page + y + x];
+                    transferRAM(data_byte);
+              }
+
+          }
+        }
 
     }
-    void SH1106::fillBuffer(uint8_t input)
+    void SH1106::fillBuffer(uint8_t input, uint8_t buffer[])
     {
-      if(input == 0 || input ==1)
+      if(input == 0 || input == 1)
       {
         for (size_t y = 0; y < oledHight; y++)
         {
@@ -83,4 +103,13 @@
             }
         }
       }
+    }
+    uint8_t SH1106::getBit(uint8_t data, uint8_t index)
+    {
+      //data HEX number from which the bit is asked
+      //index is from lsb to msb ie. 0100 is 2 (3210)
+      uint8_t bit = 0B0;
+      data &= 1 << index;
+      bit = data >> index;
+      return bit;
     }
