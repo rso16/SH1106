@@ -104,6 +104,17 @@
         }
       }
     }
+
+    void SH1106::printBuffer(uint8_t buffer[])
+    {
+      for (size_t y = 0; y < oledHight; y++)
+      {
+
+          for (size_t x = 0; x < oledWidth; x++) {
+            Serial.println(buffer[y * oledWidth + x]);
+          }
+      }
+    }
     uint8_t SH1106::getBit(uint8_t data, uint8_t index)
     {
       //data HEX number from which the bit is asked
