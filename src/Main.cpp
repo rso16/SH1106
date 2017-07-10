@@ -15,7 +15,7 @@ Serial.begin(9600);
 SH1106 s;
 Serial.println("blyat");
 s.init();
-
+s.transferRAM(0x00);
 // Serial.println("blyat");
 s.fillBuffer(0xFF,buffer);
 //s.sendStart();
