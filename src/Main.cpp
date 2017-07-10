@@ -10,6 +10,7 @@
 uint8_t buffer[oledHight * oledWidth];
 //#define RTC_ADDRESS 0x68
 int main() {
+<<<<<<< HEAD
   init();
   Serial.begin(9600);
   SH1106 s;
@@ -38,4 +39,22 @@ int main() {
     s.DrawBuffer(buffer);
     s.sendStop();
   }
+=======
+init();
+Serial.begin(9600);
+// Serial.println("blyat");
+SH1106 s;
+Serial.println("blyat");
+s.init();
+s.transferRAM(0x00);
+// Serial.println("blyat");
+s.fillBuffer(0xFF,buffer);
+//s.sendStart();
+s.printBuffer(buffer);
+Serial.println("blyat");
+// s.DrawBuffer(buffer);
+//s.sendStop();
+_delay_ms(1000);
+  return 0;
+>>>>>>> d05450beae4087e05a7bbd09c58fb803daeaa4ab
 }
