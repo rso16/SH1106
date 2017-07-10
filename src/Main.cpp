@@ -19,7 +19,7 @@ s.init();
 // Serial.println("blyat");
 s.fillBuffer(0xFF,buffer);
 //s.sendStart();
-// s.printBuffer(buffer);
+s.printBuffer(buffer);
 Serial.println("blyat");
 // s.DrawBuffer(buffer);
 //s.sendStop();

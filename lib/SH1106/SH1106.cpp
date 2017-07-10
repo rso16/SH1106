@@ -76,7 +76,7 @@
       sendStop();
     }
 
-    void SH1106::DrawBuffer(uint8_t buffer[])
+    void SH1106::DrawBuffer(uint8_t *buffer)
     {
         uint8_t data_byte;
         for (size_t page = 0; page < maxPages * 8; page += 8) {
@@ -92,7 +92,7 @@
         }
 
     }
-    void SH1106::fillBuffer(uint8_t input, uint8_t buffer[])
+    void SH1106::fillBuffer(uint8_t input, uint8_t *buffer)
     {
       if(input == 0 || input == 1)
       {
@@ -105,7 +105,7 @@
       }
     }
 
-    void SH1106::printBuffer(uint8_t buffer[])
+    void SH1106::printBuffer(uint8_t *buffer)
     {
       for (size_t y = 0; y < oledHight; y++)
       {
