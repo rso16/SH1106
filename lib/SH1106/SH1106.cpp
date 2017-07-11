@@ -92,23 +92,43 @@ void SH1106::init()
         }
 
     }
+
     void SH1106::fillBuffer(uint8_t input, uint8_t buffer[])
     {
-      if(input == 0 || input == 1)
+      Serial.println("input");
+      if(input == 0 or input == 1)
       {
-        for (size_t y = 0; y < oledHight; y++)
+        int y, x = 0;
+        while (y <64)
         {
-            for (size_t x = 0; x < oledWidth; x++) {
-              buffer[y * oledWidth + x] = input;
-            }
+          x = 0;
+          while(x < 128)
+          {
+            buffer[y * oledWidth +x] = input;
+            Serial.println((y * oledWidth) + x);
+            x++;
+          }
+          y++;
         }
       }
     }
 
     void SH1106::printBuffer(uint8_t buffer[])
     {
-      for (size_t i = 0; i < oledHight * oledWidth; i++) {
-        Serial.println(buffer[i]);
+      int counter = 0;
+      for (size_t i = 0; i < oledHight * oledWidth; i++)
+      {
+        if(counter < oledWidth)
+        {
+          Serial.print(buffer[i],HEX);
+          Serial.print(",");
+          ++counter;
+        }
+        else
+        {
+          Serial.println();
+          counter = 0;
+        }
       }
     }
     uint8_t SH1106::getBit(uint8_t data, uint8_t index)

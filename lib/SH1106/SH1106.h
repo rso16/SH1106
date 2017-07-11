@@ -10,7 +10,7 @@
 #include<avr/io.h>
 #include<Arduino.h>
 #include<math.h>
-#define DEBUG 1
+#define DEBUG 0
 #define SH1106_ADDR 0x78
 #define oledWidth 128
 #define oledHight 64
