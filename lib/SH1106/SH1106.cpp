@@ -78,19 +78,19 @@ void SH1106::init()
 
     void SH1106::DrawBuffer(uint8_t buffer[])
     {
-        uint8_t data_byte;
-        for (size_t page = 0; page < maxPages * 8; page += 8) {
-          for (size_t x = 0; x < oledWidth; x++) {
-              data_byte = 0;
-              for (size_t y = 0; y < 8; y++)
-              {
-                    data_byte += buffer[page + y + x];
-                    transferRAM(data_byte);
-              }
-
+      uint8_t data_byte;
+      for (size_t page = 0; page < maxPages * 8; page += 8)
+      {
+        for (size_t x = 0; x < oledWidth; x++)
+        {
+          data_byte = 0;
+          for (size_t y = 0; y < 8; y++)
+          {
+                data_byte += buffer[page + y + x];
+                transferRAM(data_byte);
           }
         }
-
+      }
     }
 
     void SH1106::fillBuffer(uint8_t input, uint8_t *pointerbuffer)
@@ -103,7 +103,6 @@ void SH1106::init()
         {
           *pointerbuffer = input;
           Serial.println(i);
-          _delay_ms(100);
           pointerbuffer += size;
         }
       }
