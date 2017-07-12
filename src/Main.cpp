@@ -7,20 +7,22 @@
 #define SLA_R 0xD1
 #define SLA_W 0xD0
 
-uint8_t buffer = malloc((oledHight * oledWidth)*sizeof(uint8_t));
+uint8_t *pointerbuffer = malloc(sizeof(uint8_t) * (oledHight * oledWidth));
+
+
 //#define RTC_ADDRESS 0x68
 int main() {
 init();
 Serial.begin(9600);
-// Serial.println("blyat");
+Serial.println("blyat");
 SH1106 s;
 //Serial.println("blyat");
 s.init();
 //s.transferRAM(0x00);
 // Serial.println("blyat");
-s.fillBuffer(0x00,buffer);
+s.fillBuffer(0x00,pointerbuffer);
 //s.sendStart();
-s.printBuffer(buffer);
+s.printBuffer(pointerbuffer);
 //Serial.println("blyat");
 // s.DrawBuffer(buffer);
 //s.sendStop();

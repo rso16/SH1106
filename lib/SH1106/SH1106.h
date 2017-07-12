@@ -15,6 +15,7 @@
 #define oledWidth 128
 #define oledHight 64
 #define maxPages 8
+#define size sizeof(uint8_t)
 //#include<std.h>
 class SH1106
   {

@@ -93,43 +93,43 @@ void SH1106::init()
 
     }
 
-    void SH1106::fillBuffer(uint8_t input, uint8_t buffer[])
+    void SH1106::fillBuffer(uint8_t input, uint8_t *pointerbuffer)
     {
       Serial.println("input");
+      uint8_t *beginning = pointerbuffer;
       if(input == 0 or input == 1)
       {
-        int y, x = 0;
-        while (y <64)
+        for (size_t i = 0; i < oledHight * oledWidth; i++)
         {
-          x = 0;
-          while(x < 128)
-          {
-            buffer[y * oledWidth +x] = input;
-            Serial.println((y * oledWidth) + x);
-            x++;
-          }
-          y++;
+          *pointerbuffer = input;
+          pointerbuffer += size;
         }
       }
+      pointerbuffer = beginning;
     }
 
-    void SH1106::printBuffer(uint8_t buffer[])
+    void SH1106::printBuffer(uint8_t *pointerbuffer)
     {
+      uint8_t *beginning = pointerbuffer;
       int counter = 0;
-      for (size_t i = 0; i < oledHight * oledWidth; i++)
-      {
-        if(counter < oledWidth)
+
+        for (size_t i = 0; i < oledHight * oledWidth; i++)
         {
-          Serial.print(buffer[i],HEX);
-          Serial.print(",");
-          ++counter;
+          if(counter <= oledWidth)
+          {
+            Serial.print(*pointerbuffer,HEX);
+            Serial.print(", ");
+            pointerbuffer += size;
+            ++counter;
+          }
+          else
+          {
+            Serial.println("");
+            counter = 0;
+          }
         }
-        else
-        {
-          Serial.println();
-          counter = 0;
-        }
-      }
+
+      pointerbuffer = beginning;
     }
     uint8_t SH1106::getBit(uint8_t data, uint8_t index)
     {
