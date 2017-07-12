@@ -102,9 +102,12 @@ void SH1106::init()
         for (size_t i = 0; i < oledHight * oledWidth; i++)
         {
           *pointerbuffer = input;
+          Serial.println(i);
+          _delay_ms(100);
           pointerbuffer += size;
         }
       }
+      Serial.println("done");
       pointerbuffer = beginning;
     }
 
