@@ -15,6 +15,7 @@
 #define oledWidth 128
 #define oledHight 64
 #define maxPages 8
+#define pageLength 8
 #define size sizeof(uint8_t)
 //#include<std.h>
 class SH1106
@@ -29,10 +30,12 @@ class SH1106
         void    sendData(uint8_t data);
         void    sendRAM(uint8_t data);
         void    init();
-        void    DrawBuffer(uint8_t *buffer);
-        void    fillBuffer(uint8_t input, uint8_t *buffer);
-        void    printBuffer(uint8_t *buffer);
+        void    DrawBuffer(uint8_t buffer[]);
+        void    fillBuffer(uint8_t input, uint8_t buffer[]);
+        void    printBuffer(uint8_t buffer[]);
         void    transferRAM(uint8_t data);
+        void    transferCommand(uint8_t data);
+        void    setPixel(uint8_t x, uint8_t y, uint8_t data, uint8_t buffer[]);
 
         uint8_t getBit(uint8_t data, uint8_t index);
 

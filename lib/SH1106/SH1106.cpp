@@ -34,6 +34,7 @@ void SH1106::init()
       while (!(TWCR &(1<<TWINT)));
       if(DEBUG){Serial.println(TWSR,HEX);};
     }
+
     void SH1106::sendStop()
     {
       TWCR = (1<<TWINT) |(1<<TWSTA);
@@ -71,57 +72,54 @@ void SH1106::init()
     void SH1106::transferRAM(uint8_t data)
     {
       sendStart();
+      sendAddr(SH1106_ADDR);
       sendData(0xC0);
+      sendData(data);
+      sendStop();
+    }
+
+    void SH1106::transferCommand(uint8_t data)
+    {
+      sendStart();
+      sendAddr(SH1106_ADDR);
+      sendData(0x80);
       sendData(data);
       sendStop();
     }
 
     void SH1106::DrawBuffer(uint8_t buffer[])
     {
-      uint8_t data_byte;
-      for (size_t page = 0; page < maxPages * 8; page += 8)
+      for (size_t page = 0; page < maxPages; page++)
       {
-        for (size_t x = 0; x < oledWidth; x++)
-        {
-          data_byte = 0;
-          for (size_t y = 0; y < 8; y++)
+          transferCommand(0x02);
+          transferCommand(0x10);
+          transferCommand(0xB0 + page);
+          for (size_t x = 0; x < oledWidth; x++)
           {
-                data_byte += buffer[page + y + x];
-                transferRAM(data_byte);
+            transferRAM(buffer[x + (oledWidth * page)]);
           }
-        }
       }
     }
 
-    void SH1106::fillBuffer(uint8_t input, uint8_t *pointerbuffer)
+    void SH1106::fillBuffer(uint8_t input, uint8_t buffer[])
     {
-      Serial.println("input");
-      uint8_t *beginning = pointerbuffer;
-      if(input == 0 or input == 1)
+      for (size_t i = 0; i < (oledHight * oledWidth) / 8; i++)
       {
-        for (size_t i = 0; i < oledHight * oledWidth; i++)
-        {
-          *pointerbuffer = input;
-          Serial.println(i);
-          pointerbuffer += size;
-        }
+        // Serial.println(i);
+        buffer[i]=input;
       }
-      Serial.println("done");
-      pointerbuffer = beginning;
     }
 
-    void SH1106::printBuffer(uint8_t *pointerbuffer)
+    void SH1106::printBuffer(uint8_t buffer[])
     {
-      uint8_t *beginning = pointerbuffer;
       int counter = 0;
 
-        for (size_t i = 0; i < oledHight * oledWidth; i++)
+        for (size_t i = 0; i < (oledHight * oledWidth) / 8; i++)
         {
           if(counter <= oledWidth)
           {
-            Serial.print(*pointerbuffer,HEX);
+            Serial.print(buffer[i],HEX);
             Serial.print(", ");
-            pointerbuffer += size;
             ++counter;
           }
           else
@@ -130,9 +128,20 @@ void SH1106::init()
             counter = 0;
           }
         }
-
-      pointerbuffer = beginning;
     }
+
+    void SH1106::setPixel(uint8_t x, uint8_t y, uint8_t data, uint8_t buffer[])
+    {
+      int buffAddr = x + (oledWidth * floor(y/pageLength));
+      if (data == 0x00)
+      {
+        buffer[buffAddr] &= ~(1 << (y % 8));
+      } else if (data == 0x01)
+      {
+        buffer[buffAddr]|= 1 << (y % 8);
+      }
+    }
+
     uint8_t SH1106::getBit(uint8_t data, uint8_t index)
     {
       //data HEX number from which the bit is asked
