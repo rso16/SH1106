@@ -25,10 +25,14 @@ char Font::getLetter()
 
 uint8_t Font::getFont()
 {
+  for (size_t i = 0; i < 10; i++)
+  {
+    Serial.println(fontBuffer[i],HEX);
+  }
   Serial.print("buffer ");
   uint8_t  *pointer = 2284;
   Serial.println(*pointer);
-  Serial.println((int)&fontBuffer[0]);
+  Serial.println(fontBuffer[0]);
   return &(fontBuffer[0]);
 }
 
