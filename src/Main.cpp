@@ -17,7 +17,8 @@ init();
 Serial.begin(9600);
 Serial.println("start");
 SH1106 s;
-uint8_t aBuf[] = {0x00};
+uint8_t aBuf[1] = {0x00};
+
 Font a ('A', aBuf, 1, 1);
 s.init();
 Serial.println("blyat");

@@ -7,7 +7,7 @@
 
 class Font
 {
-  private: 
+  private:
     char    letter;
     uint8_t fontBuffer[];
     uint8_t height;

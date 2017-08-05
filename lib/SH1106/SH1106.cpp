@@ -142,7 +142,7 @@ void SH1106::init()
       }
     }
 
-    void SH1106::setletter(uint8_t x, uint8_t y, uint8_t height, uint8_t width, uint8_t data[], uint8_t buffer[])
+    void SH1106::setletter(uint8_t x, uint8_t y, uint8_t height, uint8_t width, uint8_t *data, uint8_t buffer[])
     {
       int buffAddr = x + (oledWidth * floor(y/pageLength));
       for (size_t y = 0; y < height; y++)
