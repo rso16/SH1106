@@ -142,6 +142,20 @@ void SH1106::init()
       }
     }
 
+    void SH1106::setletter(uint8_t x, uint8_t y, uint8_t height, uint8_t width, uint8_t data[], uint8_t buffer[])
+    {
+      int buffAddr = x + (oledWidth * floor(y/pageLength));
+      for (size_t y = 0; y < height; y++)
+      {
+        for (size_t x = 0; x < width; x++)
+        {
+          Serial.println("stuff");
+          Serial.println(data[0]);
+          buffer[buffAddr] = data[0];
+        }
+      }
+    }
+
     uint8_t SH1106::getBit(uint8_t data, uint8_t index)
     {
       //data HEX number from which the bit is asked
