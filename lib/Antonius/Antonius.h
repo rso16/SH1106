@@ -34,6 +34,11 @@ class Antonius
         uint8_t decodeSec(uint8_t data);
         uint8_t encodeMin(uint8_t data);
         uint8_t encodeSec(uint8_t data);
+        void sendMin(uint8_t data);
+        void sendSec(uint8_t data);
+        void sendHour24(uint8_t data);
+        void sendHour12(uint8_t data);
+        uint8_t getHour24();
         uint8_t getMin();
         uint8_t getSec();
         void printTime();
@@ -45,9 +50,6 @@ class Antonius
         char*   getAmPm(uint8_t data);
         void    sendStart();
         void    sendStop();
-        void    sendAddr(uint8_t addr);
-        void    sendCommand(uint8_t command);
-        void    sendData(uint8_t data);
-        void    sendRAM(uint8_t data);
+
   };
 #endif

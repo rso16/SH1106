@@ -180,6 +180,7 @@
       uint8_t total=tenTotal+secTotal;
       return total;
     }
+
     uint8_t  Antonius::decodeSec(uint8_t input)
     {
       return decodeMin(input);
@@ -227,6 +228,7 @@
       uint8_t data4=getBit(input,4);
       return (data4*10)+(data3*pow(2,3))+(data2*pow(2,2))+(data1*pow(2,1))+(data0*pow(2,0));
     }
+
     uint8_t Antonius::encodeHour24(uint8_t data)
     {
       uint8_t hour=0;
@@ -252,6 +254,7 @@
 
       return hour;
     }
+
     uint8_t Antonius::encodeHour12(uint8_t data, uint8_t amPm)
     {
       //the amPm defines am(low) or pm(high)
@@ -289,19 +292,26 @@
       }
     }
 
+    uint8_t Antonius::getHour24()
+    {
+      uint8_t hour = requestByteFromRTC(RTC_ADDRESS,HOUR);
+      hour = decodeHour24(hour);
+      return hour;
+    }
 
     uint8_t Antonius::getMin()
     {
-      uint8_t min=requestByteFromRTC(RTC_ADDRESS,MIN);
-      min=decodeMin(min);
+      uint8_t min = requestByteFromRTC(RTC_ADDRESS,MIN);
+      min = decodeMin(min);
       return min;
     }
+
     uint8_t Antonius::getSec()
     {
     //  Serial.println("blin");
-      uint8_t sec=requestByteFromRTC(RTC_ADDRESS,SEC);
+      uint8_t sec = requestByteFromRTC(RTC_ADDRESS,SEC);
     //  Serial.println("blin");
-      sec=decodeSec(sec);
+      sec = decodeSec(sec);
   //  Serial.println("blin");
       return sec;
     }
@@ -336,48 +346,33 @@
       }
       return timeStr;
     }
+
     void Antonius::sendStart()
     {
       TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
       while (!(TWCR &(1<<TWINT)));
-      if(DEBUG){Serial.println(TWSR,HEX);};
+      //if(DEBUG){Serial.println(TWSR,HEX);};
     }
+
     void Antonius::sendStop()
     {
       TWCR = (1<<TWINT) |(1<<TWSTA);
     }
 
-    void Antonius::sendAddr(uint8_t addr)
+    void Antonius::sendSec(uint8_t data)
     {
-      TWDR = addr;
-      TWCR = (1<<TWINT) | (1<<TWEN);
-      while (!(TWCR &(1<<TWINT)));
-      if(DEBUG){Serial.println(TWSR,HEX);};
+      uint8_t sec = encodeSec(data);
+      sendByteToRTC(RTC_ADDRESS, 0x00, sec);
     }
 
-    void Antonius::sendData(uint8_t data)
+    void Antonius::sendMin(uint8_t data)
     {
-      TWDR = data;
-      TWCR = (1<<TWINT) | (1<<TWEN);
-      while (!(TWCR &  (1<<TWINT)));
-
-      if(DEBUG){Serial.println(TWSR,HEX);};
+      uint8_t min = encodeMin(data);
+      sendByteToRTC(RTC_ADDRESS, 0x01, min);
     }
 
-    void Antonius::sendCommand(uint8_t command)
+    void Antonius::sendHour24(uint8_t data)
     {
-      sendData(0x80);
-      sendData(command);
+      uint8_t hour24 = encodeHour24(data);
+      sendByteToRTC(RTC_ADDRESS, 0x02, hour24);
     }
-
-    void Antonius::sendRAM(uint8_t data)
-    {
-      sendData(0xC0);
-      sendData(data);
-    }
-
-    /*uint8_t Antonius::getDay(uint8_t)
-    {
-      uint
-
-    }*/

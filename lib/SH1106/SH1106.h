@@ -36,7 +36,7 @@ class SH1106
         void    transferRAM(uint8_t data);
         void    transferCommand(uint8_t data);
         void    setPixel(uint8_t x, uint8_t y, uint8_t data, uint8_t buffer[]);
-        void    setletter(uint8_t x, uint8_t y, uint8_t height, uint8_t width, uint8_t *data, uint8_t buffer[]);
+        void    setletter(uint8_t x, uint8_t y, uint8_t height, uint8_t width, uint8_t data[], uint8_t buffer[]);
         uint8_t getBit(uint8_t data, uint8_t index);
 
   };
