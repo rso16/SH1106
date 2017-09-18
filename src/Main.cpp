@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <util/delay.h>
 #include "Antonius.h"
+#include "Character.h"
 //#include "Font.h"
 //#include <avr/iom328p.h>
 #include "SH1106.h"
@@ -19,7 +20,7 @@ uint8_t buff7[] = {0x01, 0x01, 0x01, 0x01, 0x01, 0xFF};
 uint8_t buff8[] = {0xFF, 0x91, 0x91, 0x91, 0x91, 0xff};
 uint8_t buff9[] = {0x9F, 0x91, 0x91, 0x91, 0x91, 0xFF};
 uint8_t buffCol[] = {0x24};
-uint8_t* buffAll[] = {buff0, buff1 , buff2, buff3, buff4, buff5, buff6, buff7, buff8, buff9};
+uint8_t* buffFont[] = {buff0, buff1 , buff2, buff3, buff4, buff5, buff6, buff7, buff8, buff9};
 uint8_t buffer[(oledHight * oledWidth)/8];
 
 SH1106 s;
@@ -30,34 +31,47 @@ Antonius a;
 int main()
 {
   init();
+  s.init();
   Serial.begin(9600);
   Serial.println("start");
+  Serial.println(sizeof(buff0));
+  Character char0('1',buff0,sizeof(buff0));
+  Serial.println(char0.getCharacter());
+  s.setletter(0, 0, 1, 6, char0.getBuff(), buffer);
+
+  s.DrawBuffer(buffer);
   a.sendHour24(7);
   a.sendMin(35);
   a.sendSec(30);
+  uint8_t buffBlyat[sizeof(char0.getBuff())];
+  memcpy(buffBlyat, char0.getBuff(), sizeof(char0.getBuff()));
+  for (size_t i = 0; i < sizeof(buffBlyat)/sizeof(buffBlyat[0]); i++)
+  {
+    Serial.println(buffBlyat[i],HEX);
+  }
 
   // s.printBuffer(aBuf);
   //Font a ('A', aBuf, 3, 6);
-  s.init();
-  Serial.println("blyat");
-  uint8_t hour, min, sec;
-  while(1)
-  {
-    hour = a.getHour24();
-    min = a.getMin();
-    sec = a.getSec();
-    s.fillBuffer(0x00,buffer);
-    s.setletter(0, 0, 1, 6, buffAll[hour / 10], buffer);
-    s.setletter(7, 0, 1, 6, buffAll[hour % 10], buffer);
-    s.setletter(17, 0, 1, 1, buffCol, buffer);
-    s.setletter(21, 0, 1, 6, buffAll[min / 10], buffer);
-    s.setletter(28, 0, 1, 6, buffAll[min % 10], buffer);
-    s.setletter(38, 0, 1, 1, buffCol, buffer);
-    s.setletter(42, 0, 1, 6, buffAll[sec / 10], buffer);
-    s.setletter(49, 0, 1, 6, buffAll[sec % 10], buffer);
-    s.DrawBuffer(buffer);
-    _delay_ms(100);
-  }
+  //
+  // Serial.println("blyat");
+  // uint8_t hour, min, sec;
+  // while(1)
+  // {
+  //   hour = a.getHour24();
+  //   min = a.getMin();
+  //   sec = a.getSec();
+  //   s.fillBuffer(0x00,buffer);
+  //   s.setletter(0, 0, 1, 6, buffAll[hour / 10], buffer);
+  //   s.setletter(7, 0, 1, 6, buffAll[hour % 10], buffer);
+  //   s.setletter(17, 0, 1, 1, buffCol, buffer);
+  //   s.setletter(21, 0, 1, 6, buffAll[min / 10], buffer);
+  //   s.setletter(28, 0, 1, 6, buffAll[min % 10], buffer);
+  //   s.setletter(38, 0, 1, 1, buffCol, buffer);
+  //   s.setletter(42, 0, 1, 6, buffAll[sec / 10], buffer);
+  //   s.setletter(49, 0, 1, 6, buffAll[sec % 10], buffer);
+  //   s.DrawBuffer(buffer);
+  //   _delay_ms(100);
+  // }
   // s.transferRAM(0x00);
 
   // s.setletter(0,  0, 1, 6, buf0, buffer);
