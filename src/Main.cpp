@@ -35,8 +35,9 @@ int main()
   Serial.begin(9600);
   Serial.println("start");
   Serial.println(sizeof(buff0));
-  Character char0('1',buff0,sizeof(buff0));
+  Character char0('6',buff1,sizeof(buff1));
   Serial.println(char0.getCharacter());
+  uint8_t *tmp = char0.getBuff();
   s.setletter(0, 0, 1, 6, char0.getBuff(), buffer);
 
   s.DrawBuffer(buffer);
@@ -45,10 +46,10 @@ int main()
   a.sendSec(30);
   uint8_t buffBlyat[sizeof(char0.getBuff())];
   memcpy(buffBlyat, char0.getBuff(), sizeof(char0.getBuff()));
-  for (size_t i = 0; i < sizeof(buffBlyat)/sizeof(buffBlyat[0]); i++)
-  {
-    Serial.println(buffBlyat[i],HEX);
-  }
+  // for (size_t i = 0; i < sizeof(buffBlyat)/sizeof(buffBlyat[0]); i++)
+  // {
+  //   Serial.println(buffBlyat[i],HEX);
+  // }
 
   // s.printBuffer(aBuf);
   //Font a ('A', aBuf, 3, 6);

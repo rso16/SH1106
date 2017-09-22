@@ -7,7 +7,8 @@ Character::Character(char character, uint8_t buff[], int size)
   Serial.println("blyat");
   Serial.println(sizeof(buff));
   this->character = character;
-  memcpy(this->buff,buff,sizeof(buff)/sizeof(buff[0]));
+  this->buff = (uint8_t*) malloc(sizeof(buff)*sizeof(uint8_t));
+  memcpy(this->buff, buff,size+1);
 
   Serial.println(size);
   for (size_t i = 0; i < size; i++)
@@ -25,5 +26,5 @@ char Character::getCharacter()
 
 uint8_t* Character::getBuff()
 {
-  return buff;
+  return this->buff;
 }

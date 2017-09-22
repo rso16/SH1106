@@ -7,7 +7,7 @@
   {
     private:
       char character;
-      uint8_t buff[];
+      uint8_t *buff;
       int size;
     public:
       Character(char character, uint8_t buff[],int size);
