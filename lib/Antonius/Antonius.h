@@ -14,7 +14,7 @@
 #define SEC 0x00
 #define MIN 0x01
 #define HOUR 0x02
-#define DEBUG 1
+//#define DEBUG 1
 #define SH1106_ADDR 0x78
 //#include<std.h>
 class Antonius

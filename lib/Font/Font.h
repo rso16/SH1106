@@ -4,21 +4,21 @@
 
 #include <stdint.h>
 #include <string.h>
-
+#include "Character.h"
 class Font
 {
   private:
-    char    letter;
-    uint8_t fontBuffer[];
-    uint8_t height;
-    uint8_t width;
-
+    Character font[];
+    struct CharNode
+    {
+      Character nChar;
+      CharNode *next;
+    }*charNode;
+    CharNode *head;
   public:
-    Font(char, uint8_t[], uint8_t, uint8_t);
-    char    getLetter();
-    uint8_t getFont();
-    uint8_t getHeight();
-    uint8_t getWidth();
+    Font();
+    void addChar(Character c);
+    Character getChar(char c);
 };
 
 

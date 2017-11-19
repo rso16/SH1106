@@ -2,6 +2,7 @@
 #include <util/delay.h>
 #include "Antonius.h"
 #include "Character.h"
+#include "Font.h"
 //#include "Font.h"
 //#include <avr/iom328p.h>
 #include "SH1106.h"
@@ -19,8 +20,11 @@ uint8_t buff6[] = {0xFF, 0x91, 0x91, 0x91, 0x91, 0xF1};
 uint8_t buff7[] = {0x01, 0x01, 0x01, 0x01, 0x01, 0xFF};
 uint8_t buff8[] = {0xFF, 0x91, 0x91, 0x91, 0x91, 0xff};
 uint8_t buff9[] = {0x9F, 0x91, 0x91, 0x91, 0x91, 0xFF};
+uint8_t buffA[] = {};
 uint8_t buffCol[] = {0x24};
-uint8_t* buffFont[] = {buff0, buff1 , buff2, buff3, buff4, buff5, buff6, buff7, buff8, buff9};
+uint8_t buffSpace[] = {0x00};
+
+uint8_t* buffAll[] = {buff0, buff1 , buff2, buff3, buff4, buff5, buff6, buff7, buff8, buff9};
 uint8_t buffer[(oledHight * oledWidth)/8];
 
 SH1106 s;
@@ -33,12 +37,46 @@ int main()
   init();
   s.init();
   Serial.begin(9600);
+  Font f;
   Serial.println("start");
-  Serial.println(sizeof(buff0));
-  Character char0('6',buff1,sizeof(buff1));
-  Serial.println(char0.getCharacter());
-  uint8_t *tmp = char0.getBuff();
-  s.setletter(0, 0, 1, 6, char0.getBuff(), buffer);
+  //Serial.println(sizeof(buff0));
+
+
+  Character char0('0',buff0,sizeof(buff0));
+  //Character char1('1',buff1,sizeof(buff1));
+  Serial.println("buff123");
+  Serial.println(char0.getSize());
+  uint8_t *tmp1 = malloc(50* sizeof(uint8_t));
+  memcpy(tmp1, char0.getBuff(), char0.getSize());
+  for (size_t i = 0; i < char0.getSize(); i++)
+  {
+    Serial.print("tmp ");
+    Serial.println(tmp1[i],HEX);
+  }
+
+  //f.addChar(char0);
+  //f.addChar(char1);
+  //s.setletter(0, 0, 1, 6, f.getChar('0').getBuff(), buffer);
+  //s.setletter(7, 0, 1, 6, f.getChar('1').getBuff(), buffer);
+  f.addChar(char0);
+  Character charTMP = f.getChar('0');
+  uint8_t *tmp = malloc(sizeof(charTMP.getBuff()));
+  memcpy(tmp, charTMP.getBuff(), sizeof(charTMP.getBuff()));
+  long int sizeTMP = charTMP.getSize();
+//  _delay_ms(1000);
+  Serial.println("size123");
+  Serial.println(sizeTMP);
+  Serial.println("end size");
+  for (size_t i = 0; i < sizeTMP; i++)
+  {
+    Serial.println(tmp[i],HEX);
+  }
+
+
+
+  //Serial.println(char0.getCharacter());
+  //uint8_t *tmp = char0.getBuff();
+  //s.setletter(0, 0, 1, 6, char0.getBuff(), buffer);
 
   s.DrawBuffer(buffer);
   a.sendHour24(7);
@@ -46,6 +84,10 @@ int main()
   a.sendSec(30);
   uint8_t buffBlyat[sizeof(char0.getBuff())];
   memcpy(buffBlyat, char0.getBuff(), sizeof(char0.getBuff()));
+
+
+
+
   // for (size_t i = 0; i < sizeof(buffBlyat)/sizeof(buffBlyat[0]); i++)
   // {
   //   Serial.println(buffBlyat[i],HEX);

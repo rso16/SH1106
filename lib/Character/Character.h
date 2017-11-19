@@ -8,12 +8,18 @@
     private:
       char character;
       uint8_t *buff;
-      int size;
+      long int size;
+      uint8_t height;
+      uint8_t width;
+      //Character *next;
     public:
-      Character(char character, uint8_t buff[],int size);
+      Character(char character, uint8_t buff[],long int size);
+      Character(char character, uint8_t buff[],long int  size,uint8_t height, uint8_t width);
       char getCharacter();
       uint8_t *getBuff();
-      int getSize();
+      uint8_t getHeight();
+      uint8_t getWidth();
+      long int  getSize();
   };
 
 
