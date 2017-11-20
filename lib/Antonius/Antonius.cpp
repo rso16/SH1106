@@ -318,7 +318,7 @@
 
     char* Antonius::getTime()
     {
-      char* timeStr=(void*)malloc(sizeof(char) * 50);
+      char *timeStr=(char*)malloc(sizeof(char) * 50);
       char buffer[50];
       // Serial.println("pizdec");
       uint8_t sec=getSec();
@@ -337,7 +337,7 @@
       }
       else
       {
-        char* amPm = malloc(sizeof(char)*3);
+        char *amPm =(char*) malloc(sizeof(char)*3);
         amPm=getAmPm(hour);
         hour=decodeHour12(hour);
         sprintf(buffer,"%d:%d:%d ",hour,min,sec);
