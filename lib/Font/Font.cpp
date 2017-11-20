@@ -5,6 +5,7 @@ Font::Font()
 {
   Serial.begin(9600);
   Serial.println("head created");
+  head = malloc(sizeof(charNode));
   head = NULL;
 }
 
@@ -19,11 +20,12 @@ void Font::addChar(Character c)
       uint8_t *tmp = c.getBuff();
       head->nChar = c;
       Serial.println(c.getSize());
-      for (size_t i = 0; i < c.getSize(); i++)
-      {
-        Serial.println(tmp[i],HEX);
-      }
-      head->next  = NULL;
+      // for (size_t i = 0; i < c.getSize(); i++)
+      // {
+      //   Serial.println(tmp[i],HEX);
+      // }
+      Serial.println(head->nChar.getCharacter());
+      head->next  = malloc(sizeof(charNode));
     }
     else
     {
@@ -46,6 +48,14 @@ void Font::addChar(Character c)
         curNode = curNode->next;
       }
     }
+    if (head == NULL)
+    {
+      Serial.println("head is null");
+    }
+    else
+    {
+      Serial.println("head is not null");
+    }
 }
 
 Character Font::getChar(char c)
@@ -53,13 +63,15 @@ Character Font::getChar(char c)
   CharNode *curNode;
   if (head == 0)
   {
-    //to do give error
+    Serial.println("head is empty");
   }
   else
   {
     curNode = head;
     while(curNode != 0)
     {
+      Serial.println("c is ");
+      Serial.println(c);
       if(strcmp(c, curNode->nChar.getCharacter()) == 0)
       {
         Serial.print("node found ");

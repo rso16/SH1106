@@ -29,7 +29,7 @@ uint8_t buffer[(oledHight * oledWidth)/8];
 
 SH1106 s;
 Antonius a;
-
+Font f;
 
 //#define RTC_ADDRESS 0x68
 int main()
@@ -37,53 +37,61 @@ int main()
   init();
   s.init();
   Serial.begin(9600);
-  Font f;
+
+  // s.printBuffer(buffer);
+
   Serial.println("start");
   //Serial.println(sizeof(buff0));
 
 
   Character char0('0',buff0,sizeof(buff0));
-  //Character char1('1',buff1,sizeof(buff1));
-  Serial.println("buff123");
-  Serial.println(char0.getSize());
-  uint8_t *tmp1 = malloc(50* sizeof(uint8_t));
-  memcpy(tmp1, char0.getBuff(), char0.getSize());
-  for (size_t i = 0; i < char0.getSize(); i++)
-  {
-    Serial.print("tmp ");
-    Serial.println(tmp1[i],HEX);
-  }
+  Character char1('1',buff1,sizeof(buff1));
+  Serial.print("char = ");
+  Serial.println(char1.getCharacter());
+  // Serial.println("buff123");
+  // Serial.println(char1.getSize());
+  // uint8_t *tmp1 = malloc(50* sizeof(uint8_t));
+  // memcpy(tmp1, char1.getBuff(), char1.getSize());
+  // for (size_t i = 0; i < char1.getSize(); i++)
+  // {
+  //   Serial.print("tmp ");
+  //   Serial.println(tmp1[i],HEX);
+  // }
 
   //f.addChar(char0);
   //f.addChar(char1);
   //s.setletter(0, 0, 1, 6, f.getChar('0').getBuff(), buffer);
   //s.setletter(7, 0, 1, 6, f.getChar('1').getBuff(), buffer);
-  f.addChar(char0);
-  Character charTMP = f.getChar('0');
-  uint8_t *tmp = malloc(sizeof(charTMP.getBuff()));
-  memcpy(tmp, charTMP.getBuff(), sizeof(charTMP.getBuff()));
-  long int sizeTMP = charTMP.getSize();
-//  _delay_ms(1000);
-  Serial.println("size123");
-  Serial.println(sizeTMP);
-  Serial.println("end size");
-  for (size_t i = 0; i < sizeTMP; i++)
-  {
-    Serial.println(tmp[i],HEX);
-  }
+  // f.addChar(char1);
+  // Character charTMP = f.getChar('0');
+//   uint8_t *tmp = malloc(sizeof(charTMP.getBuff()));
+//   memcpy(tmp, charTMP.getBuff(), sizeof(charTMP.getBuff()));
+//   long int sizeTMP = charTMP.getSize();
+// //  _delay_ms(1000);
+//   Serial.println("size123");
+//   Serial.println(sizeTMP);
+//   Serial.println("end size");
+//   for (size_t i = 0; i < sizeTMP; i++)
+//   {
+//     Serial.println(tmp[i],HEX);
+//   }
 
+  f.addChar(char0);
+  f.addChar(char1);
 
 
   //Serial.println(char0.getCharacter());
   //uint8_t *tmp = char0.getBuff();
-  //s.setletter(0, 0, 1, 6, char0.getBuff(), buffer);
-
-  s.DrawBuffer(buffer);
-  a.sendHour24(7);
-  a.sendMin(35);
-  a.sendSec(30);
-  uint8_t buffBlyat[sizeof(char0.getBuff())];
-  memcpy(buffBlyat, char0.getBuff(), sizeof(char0.getBuff()));
+  // // s.printBuffer(buffer);
+  // s.setletter(0, 0, 1, 6, f.getChar('0').getBuff(), buffer);
+  // s.setletter(7, 0, 1, 6, f.getChar('1').getBuff(), buffer);
+  // // s.printBuffer(buffer);
+  // s.DrawBuffer(buffer);
+  // a.sendHour24(7);
+  // a.sendMin(35);
+  // a.sendSec(30);
+  // uint8_t buffBlyat[sizeof(char0.getBuff())];
+  // memcpy(buffBlyat, char0.getBuff(), sizeof(char0.getBuff()));
 
 
 
