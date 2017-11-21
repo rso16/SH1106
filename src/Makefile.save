@@ -1,4 +1,4 @@
-ARDUINO_PORT = /dev/ttyACM0
+RDUINO_PORT = /dev/ttyACM0
 ARD_TAG =    uno
 USER_LIB_PATH += $(realpath ../lib)
 ARDUINO_LIBS +=Antonius

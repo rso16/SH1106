@@ -5,8 +5,8 @@ Font::Font()
 {
   Serial.begin(9600);
   Serial.println("head created");
-  head =(*charNode) malloc(sizeof(charNode));
-  head = NULL;
+  head =(CharNode*) malloc(sizeof(charNode));
+  //head = NULL;
 }
 
 void Font::addChar(Character c)
@@ -25,7 +25,7 @@ void Font::addChar(Character c)
       //   Serial.println(tmp[i],HEX);
       // }
       Serial.println(head->nChar.getCharacter());
-      head->next  =(*charNode) malloc(sizeof(charNode));
+      head->next  =(CharNode*)  malloc(sizeof(charNode));
     }
     else
     {
@@ -72,7 +72,7 @@ Character Font::getChar(char c)
     {
       Serial.println("c is ");
       Serial.println(c);
-      if(c == curNode->nChar.getCharacter()))
+      if(c == curNode->nChar.getCharacter())
       {
         Serial.print("node found ");
         Serial.println(curNode->nChar.getCharacter());
