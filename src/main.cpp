@@ -20,9 +20,10 @@ uint8_t buff6[] = {0xFF, 0x91, 0x91, 0x91, 0x91, 0xF1};
 uint8_t buff7[] = {0x01, 0x01, 0x01, 0x01, 0x01, 0xFF};
 uint8_t buff8[] = {0xFF, 0x91, 0x91, 0x91, 0x91, 0xff};
 uint8_t buff9[] = {0x9F, 0x91, 0x91, 0x91, 0x91, 0xFF};
-uint8_t buffA[] = {};
+// uint8_t buffA[] = {};
 uint8_t buffCol[] = {0x24};
 uint8_t buffSpace[] = {0x00};
+// uint8_t buffA[] = {0x3F};
 
 uint8_t* buffAll[] = {buff0, buff1 , buff2, buff3, buff4, buff5, buff6, buff7, buff8, buff9};
 uint8_t buffer[(oledHight * oledWidth)/8];
@@ -46,6 +47,7 @@ int main()
 
   Character char0('0',buff0,sizeof(buff0));
   Character char1('1',buff1,sizeof(buff1));
+  Character char2('2',buff2,sizeof(buff2));
   Serial.print("char = ");
   Serial.println(char1.getCharacter());
   // Serial.println("buff123");
@@ -75,18 +77,26 @@ int main()
 //   {
 //     Serial.println(tmp[i],HEX);
 //   }
-
-  f.addChar(char0);
+  Serial.println("stuff");
   f.addChar(char1);
+  f.addChar(char2);
+  f.addChar(char0);
+
+  // f.addChar(char1);
+  f.printChars();
+
 
 
   //Serial.println(char0.getCharacter());
   //uint8_t *tmp = char0.getBuff();
   // // s.printBuffer(buffer);
-  // s.setletter(0, 0, 1, 6, f.getChar('0').getBuff(), buffer);
-  // s.setletter(7, 0, 1, 6, f.getChar('1').getBuff(), buffer);
-  // // s.printBuffer(buffer);
-  // s.DrawBuffer(buffer);
+  s.setletter(7, 0, 1, 6, f.getChar('0').getBuff(), buffer);
+  s.setletter(0, 16, 1, 6, f.getChar('2').getBuff(), buffer);
+  s.setletter(0, 0, 1, 6, f.getChar('1').getBuff(), buffer);
+
+
+  // s.printBuffer(buffer);
+  s.DrawBuffer(buffer);
   // a.sendHour24(7);
   // a.sendMin(35);
   // a.sendSec(30);

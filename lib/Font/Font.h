@@ -13,12 +13,14 @@ class Font
     {
       Character nChar;
       CharNode *next;
+      bool isInit = false;
     }*charNode;
     CharNode *head;
   public:
     Font();
     void addChar(Character c);
     Character getChar(char c);
+    void printChars();
 };
 
 
