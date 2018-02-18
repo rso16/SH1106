@@ -5,3 +5,6 @@ momentarily working :
 - sending stop  (i2c)
 - sending commands (i2c)
 - sending data (i2c)
+- init
+- draw pixel
+- draw bitmap
