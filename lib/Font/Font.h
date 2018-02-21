@@ -5,13 +5,13 @@
 #include <stdint.h>
 #include <string.h>
 #include "Character.h"
-
 #define maxChars 50
 class Font
 {
   private:
     Character font[maxChars];
     int fontCounter = 0;
+    int err = -1;
   public:
     Font();
     void addChar(Character c);

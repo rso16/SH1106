@@ -1,7 +1,10 @@
 #include "Character.h"
 #include <Arduino.h>
 //made by Rick Overhorst
-
+Character::Character()
+{
+  
+}
 Character::Character(char character, uint8_t buff[], long int size)
 {
   // Serial.println(sizeof(buff));
