@@ -8,14 +8,8 @@
 class Font
 {
   private:
-    Character font[];
-    struct CharNode
-    {
-      Character nChar;
-      CharNode *next;
-      bool isInit = false;
-    }*charNode;
-    CharNode *head;
+    Character font[50];
+    int fontCounter;
   public:
     Font();
     void addChar(Character c);
