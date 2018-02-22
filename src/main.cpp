@@ -67,6 +67,11 @@ int main()
   s.setletter(0, 16, 1, 6, f.getChar('2').getBuff(), buffer);
   s.setletter(0, 0, 1, 6, f.getChar('1').getBuff(), buffer);
   s.setletter(7, 16, 1, 6, f.getChar('A').getBuff(), buffer);
+  s.setletter(7, 24, 1, 6, f.getChar('0').getBuff(), buffer);
+  s.setletter(7, 32, 1, 6, f.getChar('0').getBuff(), buffer);
+  s.setletter(7, 40, 1, 6, f.getChar('0').getBuff(), buffer);
+  s.setletter(7, 48, 1, 6, f.getChar('0').getBuff(), buffer);
+  s.setletter(7, 56, 1, 6, f.getChar('0').getBuff(), buffer);
   s.DrawBuffer(buffer);
 
 
