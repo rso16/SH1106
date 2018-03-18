@@ -3,6 +3,7 @@
 #include "Atmega328P.h"
 #include "Character.h"
 #include "Font.h"
+#define IDLENGTH 6
 //#include "Font.h"
 //#include <avr/iom328p.h>
 
@@ -19,18 +20,23 @@ int main()
   a.setDPM(8,1);
   a.setDPM(7,1);
   a.setDPM(6,1);
-  uint8_t byte = 0;
+
+  uint8_t id[IDLENGTH];
 
 
   a.UARTBegin(9600);
   while(1)
   {
       // a.binToLed(a.UARTREAD());
-      // a.binToLed(0xff);
-      a.UARTSend((uint8_t) a.UARTREAD());
-      a.UARTSend((uint8_t) a.UARTREAD());
-      a.UARTSend((uint8_t) 0xA);
-      a.UARTSend((uint8_t) 0x0D);
+      a.binToLed(0xAA);
+      a.UARTREADBytes(id, IDLENGTH);
+      _delay_ms(1000);
+      a.binToLed(0xAA);
+      _delay_ms(1000);
+      a.binToLed(id[0]);
+      _delay_ms(1000);
+      a.UARTSend((uint8_t) id[0]);
+      a.UARTSend((uint8_t) id[1]);
   }
 
   return 0;
