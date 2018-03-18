@@ -167,7 +167,7 @@
     void Atmega328P::UARTInit(uint8_t dataBits, uint8_t parityBit, uint8_t stopBits, uint32_t baud, uint8_t speed, uint8_t RT)
     {
       uint16_t ubrr = (clockspeed / ((speed + 1) * 8 * baud)) - 1;
-      binToLed(ubrr);
+      // binToLed(ubrr);
       UBRR0H = (unsigned char)(ubrr>>8);
       UBRR0L = (unsigned char)ubrr;
       // Enable receiver and transmitter
@@ -204,3 +204,19 @@
      // /* Put data into buffer, sends the data */
      // UDR0 = data;
     }
+uint8_t Atmega328P::UARTREAD()
+{
+  /* Wait for data to be received */
+  while ( !(UCSR0A & (1<<RXC0)) );
+  /* Get and return received data from buffer */
+  return UDR0;
+}
+void UARTREADBytes(uint8_t *bytes, uint8_t amountOfBytes)
+{
+  int index = 0;
+  while(index <= amountOfBytes)
+  {
+    bytes[index] =  UARTREAD();
+    index++;
+  }
+}

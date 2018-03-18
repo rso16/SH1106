@@ -24,6 +24,10 @@ class Atmega328P : public Microcontroller
        void    UARTBegin(long int baud); //function to begin the UART with the defaul settings and a baudrate. returns an status code.
        void    UARTSend(uint16_t data);
        void    UARTSend(uint8_t data);
+       void    println(char string[]);
+       uint8_t UARTREAD();
+       void    UARTREADBytes(uint8_t *bytes, uint8_t amountOfBytes);
+
        void    setDPM(uint8_t pin, uint8_t value);// set pin mode value = 0 or 1 for the digital pins
        void    setAPM(uint8_t pin, uint8_t value);// set pin mode value = 0 or 1 for the analog pins
        void    DW(uint8_t pin, uint8_t value);//digital write(dw) value = 0 or 1

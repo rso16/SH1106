@@ -25,10 +25,12 @@ int main()
   a.UARTBegin(9600);
   while(1)
   {
-      a.UARTSend((uint8_t) 0x41);
-      a.UARTSend((uint8_t) 0x412);
+      // a.binToLed(a.UARTREAD());
+      // a.binToLed(0xff);
+      a.UARTSend((uint8_t) a.UARTREAD());
+      a.UARTSend((uint8_t) a.UARTREAD());
       a.UARTSend((uint8_t) 0xA);
-      // a.UARTSend((uint8_t)'\0');
+      a.UARTSend((uint8_t) 0x0D);
   }
 
   return 0;

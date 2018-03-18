@@ -13,8 +13,8 @@
 #define EVENPARITY  1
 #define ODDPARITY   2
 
-#define DOUBLESPEED 0
-#define NORMALSPEED 1
+#define NORMALSPEED 0
+#define DOUBLESPEED 1
 
 class Microcontroller
 {
@@ -40,7 +40,7 @@ class Microcontroller
      virtual void UARTBegin(long int baud)   = 0; //function to begin the UART with the defaul settings and a baudrate. returns an status code.
      virtual void UARTSend(uint16_t data)    = 0;
      virtual void UARTSend(uint8_t data)     = 0;
-
+     virtual uint8_t UARTREAD()              = 0;
 };
 
 #endif
