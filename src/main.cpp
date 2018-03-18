@@ -26,6 +26,7 @@ int main()
   while(1)
   {
       a.UARTSend((uint8_t) 0x41);
+      a.UARTSend((uint8_t) 0x412);
       a.UARTSend((uint8_t) 0xA);
       // a.UARTSend((uint8_t)'\0');
   }

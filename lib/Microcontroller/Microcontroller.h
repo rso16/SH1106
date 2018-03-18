@@ -13,9 +13,8 @@
 #define EVENPARITY  1
 #define ODDPARITY   2
 
-#define NORMALSPEED 0
-#define DOUBLESPEED 1
-
+#define DOUBLESPEED 0
+#define NORMALSPEED 1
 
 class Microcontroller
 {
