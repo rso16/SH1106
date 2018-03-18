@@ -206,10 +206,10 @@ void Atmega328P::UARTSend(uint8_t data)
  // UDR0 = data;
 }
 
-void Atmega328P::UARTSendBytes(uint8_t *bytes, uint8_t amountOfBytes)
+void Atmega328P::UARTSendBytes(uint8_t bytes[], uint8_t amountOfBytes)
 {
   int index = 0;
-  while(index <= amountOfBytes)
+  while(index < amountOfBytes)
   {
     UARTSend(bytes[index]);
     index++;
@@ -226,11 +226,14 @@ uint8_t Atmega328P::UARTREAD()
 void Atmega328P::UARTREADBytes(uint8_t *bytes, uint8_t amountOfBytes)
 {
   int index = 0;
-  while(index <= amountOfBytes)
-  {
-    bytes[index] =  UARTREAD();
-    binToLed(bytes[index]);
-    index++;
-  }
-  binToLed((uint8_t) 0xff);
+  uint8_t* temp = bytes;
+  temp = bytes + (sizeof(uint8_t));
+    while(index <= amountOfBytes)
+    {
+      temp = bytes + (sizeof(uint8_t) * index);
+      *temp =  UARTREAD();
+      // binToLed(*temp);
+      index++;
+    }
+    // binToLed((uint8_t) 0xff);
 }

@@ -4,6 +4,7 @@
 #include "Character.h"
 #include "Font.h"
 #define IDLENGTH 6
+uint8_t id[IDLENGTH];
 //#include "Font.h"
 //#include <avr/iom328p.h>
 
@@ -21,22 +22,22 @@ int main()
   a.setDPM(7,1);
   a.setDPM(6,1);
 
-  uint8_t id[IDLENGTH];
+
 
 
   a.UARTBegin(9600);
   while(1)
   {
       // a.binToLed(a.UARTREAD());
-      a.binToLed(0xAA);
+      // a.binToLed(0xAA);
       a.UARTREADBytes(id, IDLENGTH);
-      _delay_ms(1000);
-      a.binToLed(0xAA);
-      _delay_ms(1000);
+      // _delay_ms(1000);
+      // a.binToLed(0xff);
+      // _delay_ms(1000);
       a.binToLed(id[0]);
-      _delay_ms(1000);
-      a.UARTSend((uint8_t) id[0]);
-      a.UARTSend((uint8_t) id[1]);
+      // _delay_ms(1000);
+      a.UARTSendBytes(id,IDLENGTH);
+
   }
 
   return 0;
