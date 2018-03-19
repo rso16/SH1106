@@ -169,6 +169,7 @@ void Atmega328P::UARTInit(uint8_t dataBits, uint8_t parityBit, uint8_t stopBits,
 {
   uint16_t ubrr = (clockspeed / ((speed + 1) * 8 * baud)) - 1;
   // binToLed(ubrr);
+  UCSR0A |= (1 << U2X0);
   UBRR0H = (unsigned char)(ubrr>>8);
   UBRR0L = (unsigned char)ubrr;
   // Enable receiver and transmitter
