@@ -3,11 +3,11 @@
 #include "Atmega328P.h"
 #include "Character.h"
 #include "Font.h"
-#define IDLENGTH 6
-uint8_t id[IDLENGTH];
+#define IDLENGTH 12
+uint8_t id[IDLENGTH + 1];
 //#include "Font.h"
 //#include <avr/iom328p.h>
-
+void readRFID(uint8_t *bytes, uint8_t lengthOfID);
 Atmega328P a;
 //#define RTC_ADDRESS 0x68
 int main()
@@ -28,17 +28,31 @@ int main()
   a.UARTBegin(9600);
   while(1)
   {
-      // a.binToLed(a.UARTREAD());
-      // a.binToLed(0xAA);
-      a.UARTREADBytes(id, IDLENGTH);
-      // _delay_ms(1000);
-      // a.binToLed(0xff);
-      // _delay_ms(1000);
-      a.binToLed(id[0]);
-      // _delay_ms(1000);
-      a.UARTSendBytes(id,IDLENGTH);
+      readRFID(id, IDLENGTH);
+      id[IDLENGTH + 1] = '\0';
+      a.println(id);
+      // a.UARTREADBytes(id, IDLENGTH);
+      // a.UARTSend((uint8_t) (id[0] + '0'));
+      // a.UARTSendBytes(id, IDLENGTH);
+      // id[IDLENGTH + 1] = '\0';
+      // a.binToLed(id[0]);
+      // a.println(id);
 
   }
 
   return 0;
+}
+
+void readRFID(uint8_t *bytes, uint8_t lengthOfID)
+{
+  bool tagRead = false;
+  while(!tagRead)
+  {
+    if(a.UARTRead() == 0x02)
+    {
+      a.UARTREADBytes(bytes, lengthOfID);
+      tagRead = true;
+    }
+  }
+
 }

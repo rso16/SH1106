@@ -215,7 +215,7 @@ void Atmega328P::UARTSendBytes(uint8_t bytes[], uint8_t amountOfBytes)
     index++;
   }
 }
-uint8_t Atmega328P::UARTREAD()
+uint8_t Atmega328P::UARTRead()
 {
   /* Wait for data to be received */
   while ( !(UCSR0A & (1<<RXC0)) );
@@ -231,9 +231,21 @@ void Atmega328P::UARTREADBytes(uint8_t *bytes, uint8_t amountOfBytes)
     while(index <= amountOfBytes)
     {
       temp = bytes + (sizeof(uint8_t) * index);
-      *temp =  UARTREAD();
+      *temp =  UARTRead();
       // binToLed(*temp);
       index++;
     }
     // binToLed((uint8_t) 0xff);
+}
+
+void Atmega328P::println(uint8_t *bytes)
+{
+  int index = 0;
+  while (bytes[index] != '\0')
+  {
+    index++;
+  }
+  binToLed(index);
+  UARTSendBytes(bytes, 13);
+  // UARTSend((uint8_t) 0x0D);
 }
