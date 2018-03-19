@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <util/delay.h>
 #include "Atmega328P.h"
 #include "Character.h"
@@ -12,7 +11,6 @@ Atmega328P a;
 //#define RTC_ADDRESS 0x68
 int main()
 {
-  Serial.begin(9600);
   a.setDPM(13,1);
   a.setDPM(12,1);
   a.setDPM(11,1);
