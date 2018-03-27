@@ -92,6 +92,17 @@ void Atmega328P::AW(uint8_t pin, uint8_t value)
   }
 }
 
+uint16_t Atmega328P::AR(uint8_t pin)
+{
+  ADMUX &= 0xf0;
+  ADMUX = pin;
+  ADMUX |= (1<<REFS0); 
+  ADCSRA = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
+  ADCSRA |= (1<<ADEN);
+  ADCSRA |= (1<<ADSC);
+  while (ADCSRA & (1<<ADSC));
+  uint16_t result = ADC;
+}
 
 void Atmega328P::toggleDP(uint8_t pin)
 {

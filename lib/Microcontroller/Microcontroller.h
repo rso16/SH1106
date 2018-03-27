@@ -21,13 +21,14 @@ class Microcontroller
   private:
 
   public:
-     virtual void    setDPM(uint8_t pin, uint8_t value) = 0;// set pin mode value = 0 or 1 for the digital pins
-     virtual void    setAPM(uint8_t pin, uint8_t value) = 0;// set pin mode value = 0 or 1 for the analog pins
-     virtual void    DW(uint8_t pin, uint8_t value)     = 0;//digital write(dw) value = 0 or 1
-     virtual uint8_t DR(uint8_t pin)                    = 0;//digital read
-     virtual void    AW(uint8_t pin, uint8_t value)     = 0;//same as dw but with analog pin
-     virtual uint8_t getPinStat(uint8_t pin)            = 0;
-     virtual void    toggleDP(uint8_t pin)              = 0;
+     virtual void     setDPM(uint8_t pin, uint8_t value) = 0;// set pin mode value = 0 or 1 for the digital pins
+     virtual void     setAPM(uint8_t pin, uint8_t value) = 0;// set pin mode value = 0 or 1 for the analog pins
+     virtual void     DW(uint8_t pin, uint8_t value)     = 0;//digital write(dw) value = 0 or 1
+     virtual uint8_t  DR(uint8_t pin)                    = 0;//digital read
+     virtual void     AW(uint8_t pin, uint8_t value)     = 0;//same as dw but with analog pin
+     virtual uint16_t AR(uint8_t pin)                   = 0;
+     virtual uint8_t  getPinStat(uint8_t pin)            = 0;
+     virtual void     toggleDP(uint8_t pin)              = 0;
 
      virtual uint8_t getBit(uint8_t data, uint8_t index) = 0;//gets the bit for the data (a byte) at the index
 

@@ -1,56 +1,23 @@
-#include <util/delay.h>
 #include "Atmega328P.h"
-#include "Character.h"
-#include "Font.h"
-#define IDLENGTH 12
-uint8_t id[IDLENGTH + 1];
-//#include "Font.h"
-//#include <avr/iom328p.h>
-void readRFID(uint8_t *bytes, uint8_t lengthOfID);
+#include "functions.h"
 Atmega328P a;
-//#define RTC_ADDRESS 0x68
-int main()
+int main(int argc, char const *argv[])
 {
-  a.setDPM(13,1);
-  a.setDPM(12,1);
-  a.setDPM(11,1);
-  a.setDPM(10,1);
-  a.setDPM(9,1);
-  a.setDPM(8,1);
-  a.setDPM(7,1);
-  a.setDPM(6,1);
-
-
-
-
   a.UARTBegin(9600);
+  uint8_t bytes[2];
+  a.setDPM(13, 1);
+  a.setAPM(0, 0);
+  uint16_t counter = 0x3FF;
   while(1)
   {
-      readRFID(id, IDLENGTH);
-      id[IDLENGTH + 1] = '\0';
-      a.println(id);
-      // a.UARTREADBytes(id, IDLENGTH);
-      // a.UARTSend((uint8_t) (id[0] + '0'));
-      // a.UARTSendBytes(id, IDLENGTH);
-      // id[IDLENGTH + 1] = '\0';
-      // a.binToLed(id[0]);
-      // a.println(id);
-
+    a.DW(13,0);
+    uint16_tTOuint8_t(bytes,a.AR(0));
+    a.DW(13,1);
+    a.UARTSend((uint8_t)toAscii(bytes[0]));
+    a.UARTSend((uint8_t)toAscii(bytes[1]));
+    a.UARTSend((uint8_t)0x0D);
+    counter--;
+    _delay_ms(500);
   }
-
   return 0;
-}
-
-void readRFID(uint8_t *bytes, uint8_t lengthOfID)
-{
-  bool tagRead = false;
-  while(!tagRead)
-  {
-    if(a.UARTRead() == 0x02)
-    {
-      a.UARTREADBytes(bytes, lengthOfID);
-      tagRead = true;
-    }
-  }
-
 }
