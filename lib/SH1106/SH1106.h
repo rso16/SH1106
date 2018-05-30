@@ -4,8 +4,8 @@
 
 //includes
 #include <stdint.h>
+#include <stdio.h>
 #include<avr/io.h>
-#include<Arduino.h>
 #include<math.h>
 #include "Microcontroller.h"
 #define DEBUG 0

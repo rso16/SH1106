@@ -4,8 +4,8 @@
 void SH1106::init(Microcontroller *m)
 {
   // Serial.begin(9600);
-  Serial.println("init oled");
   mic = m;
+  mic->println("init oled");
   mic->sendI2CStart();
   mic->sendI2CAddr(SH1106_ADDR);
   sendCommand(0x0ae);
@@ -94,13 +94,13 @@ void SH1106::init(Microcontroller *m)
         {
           if(counter <= oledWidth)
           {
-            Serial.print(buffer[i],HEX);
-            Serial.print(", ");
+            // Serial.print(buffer[i],HEX);
+            // Serial.print(", ");
             ++counter;
           }
           else
           {
-            Serial.println("");
+            // Serial.println("");
             counter = 0;
           }
         }

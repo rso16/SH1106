@@ -95,13 +95,13 @@ void Atmega328P::AW(uint8_t pin, uint8_t value)
 uint16_t Atmega328P::AR(uint8_t pin)
 {
   ADMUX &= 0xf0;
-  ADMUX = pin;
-  ADMUX |= (1<<REFS0); 
+  ADMUX |= pin;
+  ADMUX |= (1<<REFS0);
   ADCSRA = (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0);
   ADCSRA |= (1<<ADEN);
   ADCSRA |= (1<<ADSC);
   while (ADCSRA & (1<<ADSC));
-  uint16_t result = ADC;
+  return ADC;
 }
 
 void Atmega328P::toggleDP(uint8_t pin)
@@ -152,7 +152,7 @@ void Atmega328P::sendI2CStart()
 {
   TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
   while (!(TWCR &(1<<TWINT)));
-  if(DEBUG){Serial.println(TWSR,HEX);};
+  if(DEBUG){println(TWSR);};
 }
 
 void Atmega328P::sendI2CStop()
@@ -165,7 +165,7 @@ void Atmega328P::sendI2CAddr(uint8_t addr)
   TWDR = addr;
   TWCR = (1<<TWINT) | (1<<TWEN);
   while (!(TWCR &(1<<TWINT)));
-  if(DEBUG){Serial.println(TWSR,HEX);};
+  if(DEBUG){println(TWSR);};
 }
 
 void Atmega328P::sendI2CData(uint8_t data)
@@ -173,7 +173,7 @@ void Atmega328P::sendI2CData(uint8_t data)
   TWDR = data;
   TWCR = (1<<TWINT) | (1<<TWEN);
   while (!(TWCR &  (1<<TWINT)));
-  if(DEBUG){Serial.println(TWSR,HEX);};
+  if(DEBUG){println(TWSR);};
 }
 
 void Atmega328P::UARTInit(uint8_t dataBits, uint8_t parityBit, uint8_t stopBits, uint32_t baud, uint8_t speed, uint8_t RT)
@@ -191,7 +191,7 @@ void Atmega328P::UARTInit(uint8_t dataBits, uint8_t parityBit, uint8_t stopBits,
 
 void Atmega328P::UARTBegin(long int baud)//function to begin the UART with the defaul settings and a baudrate. returns an status code.
 {
-  UARTInit(0, 0, 0, 9600, NORMALSPEED, 0);
+  UARTInit(0, 0, 0, baud, NORMALSPEED, 0);
 }
 
 void Atmega328P::UARTSend(uint16_t data)
@@ -208,20 +208,12 @@ void Atmega328P::UARTSend(uint8_t data)
   while ( !( UCSR0A & (1<<UDRE0)) );
   /* Put data into buffer, sends the data */
   UDR0 = data;
- //  /* Wait for empty transmit buffer */
- // while ( !( UCSR0A & (1<<UDRE0)));
- // /* Copy 9th bit to TXB8 */
- // UCSR0B &= ~(1<<TXB80);
- // if ( data & 0x0100 )
- // UCSR0B |= (1<<TXB80);
- // /* Put data into buffer, sends the data */
- // UDR0 = data;
-}
+ }
 
 void Atmega328P::UARTSendBytes(uint8_t bytes[], uint8_t amountOfBytes)
 {
   int index = 0;
-  while(index < amountOfBytes)
+  while(index < amountOfBytes - 1)
   {
     UARTSend(bytes[index]);
     index++;
@@ -229,8 +221,14 @@ void Atmega328P::UARTSendBytes(uint8_t bytes[], uint8_t amountOfBytes)
 }
 uint8_t Atmega328P::UARTRead()
 {
-  /* Wait for data to be received */
-  while ( !(UCSR0A & (1<<RXC0)) );
+  /* Wait for data to be received  for a max 50ms */
+  int counter = 75;
+  // println("blyat");
+  while ( (!(UCSR0A & (1<<RXC0))) && counter >= 0 )
+  {
+    _delay_ms(1);
+    counter--;
+  }
   /* Get and return received data from buffer */
   return UDR0;
 }
@@ -258,6 +256,48 @@ void Atmega328P::println(uint8_t *bytes)
     index++;
   }
   binToLed(index);
-  UARTSendBytes(bytes, index);
+  UARTSendBytes(bytes, index + 1 );
+  UARTSend((uint8_t) 0x0A);
   UARTSend((uint8_t) 0x0D);
+}
+
+void Atmega328P::EEPROM_Write(uint32_t addr, uint8_t data)
+{
+  /* Wait for completion of previous write */
+  while (EECR & (1<<EEPE));
+  /* Set up address and Data Registers */
+  EEAR = addr;
+  EEDR = data;
+  /* Write logical one to EEMPE */
+  EECR |= (1<<EEMPE);
+  /* Start eeprom write by setting EEPE */
+  EECR |= (1<<EEPE);
+}
+
+void Atmega328P::EEPROM_WriteBytes(uint32_t addr, uint8_t data[], uint32_t amountOfBytes)
+{
+  for (size_t i = 0; i < amountOfBytes; i++)
+  {
+    EEPROM_Write(addr + i, data[i]);
+  }
+}
+
+uint8_t Atmega328P::EEPROM_Read(uint32_t addr)
+{
+  /* Wait for completion of previous write */
+  while (EECR & (1<<EEPE));
+  /* Set up address register */
+  EEAR = addr;
+  /* Start eeprom read by writing EERE */
+  EECR |= (1<<EERE);
+  /* Return data from Data Register */
+  return EEDR;
+}
+
+void Atmega328P::EEPROM_ReadBytes(uint32_t addr, uint8_t data[], uint32_t amountOfBytes)
+{
+  for (size_t i = 0; i < amountOfBytes; i++)
+  {
+    data[i] = EEPROM_Read(addr + i);
+  }
 }
