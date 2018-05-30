@@ -1,10 +1,14 @@
 #include "SH1106.h"
 //made by Rick Overhorst
 //varius handy dandy fuction for the atmel atmega 328 chip/Arduino
-void SH1106::init()
+void SH1106::init(Microcontroller *m)
 {
-  sendStart();
-  sendAddr(SH1106_ADDR);
+  // Serial.begin(9600);
+
+  mic = m;
+  mic->println("init oled");
+  mic->sendI2CStart();
+  mic->sendI2CAddr(SH1106_ADDR);
   sendCommand(0x0ae);
   sendCommand(0x0d5);
   sendCommand(0x80);
@@ -25,66 +29,39 @@ void SH1106::init()
   sendCommand(0x02); // set collom lower to 2
   sendCommand(0x10); // set collom upper to 0
   sendCommand(0xAF); // turn screen on
-  sendStop();
+  mic->sendI2CStop();
 }
 
-    void SH1106::sendStart()
-    {
-      TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
-      while (!(TWCR &(1<<TWINT)));
-      if(DEBUG){Serial.println(TWSR,HEX);};
-    }
 
-    void SH1106::sendStop()
-    {
-      TWCR = (1<<TWINT) |(1<<TWSTA);
-    }
-
-    void SH1106::sendAddr(uint8_t addr)
-    {
-      TWDR = addr;
-      TWCR = (1<<TWINT) | (1<<TWEN);
-      while (!(TWCR &(1<<TWINT)));
-      if(DEBUG){Serial.println(TWSR,HEX);};
-    }
-
-    void SH1106::sendData(uint8_t data)
-    {
-      TWDR = data;
-      TWCR = (1<<TWINT) | (1<<TWEN);
-      while (!(TWCR &  (1<<TWINT)));
-
-      if(DEBUG){Serial.println(TWSR,HEX);};
-    }
 
     void SH1106::sendCommand(uint8_t command)
     {
-      sendData(0x80);
-      sendData(command);
+      mic->sendI2CData(0x80);
+      mic->sendI2CData(command);
     }
 
     void SH1106::sendRAM(uint8_t data)
     {
-      sendData(0xC0);
-      sendData(data);
+      mic->sendI2CData(0xC0);
+      mic->sendI2CData(data);
     }
 
     void SH1106::transferRAM(uint8_t data)
     {
-      sendStart();
-      sendAddr(SH1106_ADDR);
-      sendData(0xC0);
-      sendData(data);
-      sendStop();
+      mic->sendI2CStart();
+      mic->sendI2CAddr(SH1106_ADDR);
+      mic->sendI2CData(0xC0);
+      mic->sendI2CData(data);
+      mic->sendI2CStop();
     }
 
     void SH1106::transferCommand(uint8_t data)
     {
-      sendStart();
-      sendAddr(SH1106_ADDR);
-      sendData(0x80);
-      sendData(data);
-      sendStop();
+      mic->sendI2CStart();
+      mic->sendI2CAddr(SH1106_ADDR);
+      mic->sendI2CData(0x80);
+      mic->sendI2CData(data);
+      mic->sendI2CStop();
     }
 
     void SH1106::DrawBuffer(uint8_t buffer[])
@@ -118,13 +95,13 @@ void SH1106::init()
         {
           if(counter <= oledWidth)
           {
-            Serial.print(buffer[i],HEX);
-            Serial.print(", ");
+            // Serial.print(buffer[i],HEX);
+            // Serial.print(", ");
             ++counter;
           }
           else
           {
-            Serial.println("");
+            // Serial.println("");
             counter = 0;
           }
         }
