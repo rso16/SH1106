@@ -5,21 +5,18 @@
 #include <stdint.h>
 #include <string.h>
 #include "Character.h"
+#define maxChars 50
 class Font
 {
   private:
-    Character font[];
-    struct CharNode
-    {
-      Character nChar;
-      CharNode *next;
-      bool isInit = false;
-    }*charNode;
-    CharNode *head;
+    Character font[maxChars];
+    int fontCounter = 0;
+    int err = -1;
   public:
     Font();
     void addChar(Character c);
     Character getChar(char c);
+    int findFontIndex(char c);
     void printChars();
 };
 

@@ -13,6 +13,7 @@
       uint8_t width;
       //Character *next;
     public:
+      Character();
       Character(char character, uint8_t buff[],long int size);
       Character(char character, uint8_t buff[],long int  size,uint8_t height, uint8_t width);
       char getCharacter();
