@@ -1,0 +1,6 @@
+[submodule "lib/atmega328P"]
+	path = lib/atmega328P
+	url = https://github.com/rso16/atmega328P.git
+[submodule "lib/Microcontroller"]
+	path = lib/Microcontroller
+	url = https://github.com/rso16/Microcontroller.git
