@@ -30,6 +30,7 @@ void SH1106::init(Microcontroller *m)
   sendCommand(0x10); // set collom upper to 0
   sendCommand(0xAF); // turn screen on
   mic->sendI2CStop();
+  readRAM();//dummy read
 }
 
 
@@ -46,12 +47,28 @@ void SH1106::init(Microcontroller *m)
       mic->sendI2CData(data);
     }
 
+    uint8_t SH1106::readRAM()
+    {
+      uint8_t data;
+
+      mic->sendI2CStart();
+      mic->sendI2CAddr(SH1106_ADDR);
+      mic->sendI2CData(0x40);
+      mic->sendI2CStop();
+
+      mic->sendI2CStart();
+      mic->sendI2CAddr(SH1106_ADDR + 1);
+      mic->sendI2CData(0x40);
+      data = mic->readI2CData();
+      mic->sendI2CStop();
+
+      return data;
+    }
     void SH1106::transferRAM(uint8_t data)
     {
       mic->sendI2CStart();
       mic->sendI2CAddr(SH1106_ADDR);
-      mic->sendI2CData(0xC0);
-      mic->sendI2CData(data);
+      sendRAM(data);
       mic->sendI2CStop();
     }
 
@@ -59,8 +76,7 @@ void SH1106::init(Microcontroller *m)
     {
       mic->sendI2CStart();
       mic->sendI2CAddr(SH1106_ADDR);
-      mic->sendI2CData(0x80);
-      mic->sendI2CData(data);
+      sendCommand(data);
       mic->sendI2CStop();
     }
 
@@ -68,13 +84,17 @@ void SH1106::init(Microcontroller *m)
     {
       for (size_t page = 0; page < maxPages; page++)
       {
-          transferCommand(0x02);
-          transferCommand(0x10);
-          transferCommand(0xB0 + page);
+          transferCommand(0x02  );//set lower column address to 0x02 (0x02 because of the offset)
+          transferCommand(0x10);//set higher column address to 0x00
+          transferCommand(0xB0 + page);//set page to 0x00
+          //fill the ram
+          mic->sendI2CStart();
+          mic->sendI2CAddr(SH1106_ADDR);
           for (size_t x = 0; x < oledWidth; x++)
           {
-            transferRAM(buffer[x + (oledWidth * page)]);
+            sendRAM(buffer[x + (oledWidth * page)]);
           }
+          mic->sendI2CStop();
       }
     }
 

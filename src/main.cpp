@@ -1,4 +1,4 @@
-// #include <Arduino.h>
+#include <Arduino.h>
 #include <util/delay.h>
 #include "Atmega328P.h"
 #include "Character.h"
@@ -36,7 +36,7 @@ uint8_t buffer[(oledHight * oledWidth)/8];
 //#define RTC_ADDRESS 0x68
 int main()
 {
-  // init();
+  init();
   // Serial.begin(9600);
   // Serial.println("start");
   // _delay_ms(1000);
@@ -44,6 +44,7 @@ int main()
   Atmega328P a;
   a.UARTBegin(9600);
   a.println("blyat");
+  a.setDPM(13, 1);
   // Serial.println("pointer");
   // _delay_ms(1000);
   SH1106 s;
@@ -51,7 +52,15 @@ int main()
   // _delay_ms(1000);
   Font f;
   s.init(&a);
-
+  _delay_ms(100);
+  a.println("OLED init done");
+  // while(1)
+  // {
+  //   s.transferCommand(0xAF);
+  //   _delay_ms(500);
+  //   s.transferCommand(0xAE);
+  //   _delay_ms(500);
+  // }
 
   // s.printBuffer(buffer);
 
@@ -75,7 +84,7 @@ int main()
   // f.addChar(char1);
   f.printChars();
 
-  s.setletter(7, 0, 1, 6, f.getChar('0').getBuff(), buffer);
+  s.setletter(7, 0, 1, 6, f.getChar('2').getBuff(), buffer);
   s.setletter(0, 8, 1, 6, f.getChar('2').getBuff(), buffer);
   s.setletter(0, 16, 1, 6, f.getChar('2').getBuff(), buffer);
   s.setletter(0, 0, 1, 6, f.getChar('1').getBuff(), buffer);
@@ -86,7 +95,21 @@ int main()
   s.setletter(7, 48, 1, 6, f.getChar('0').getBuff(), buffer);
   s.setletter(7, 56, 1, 6, f.getChar('0').getBuff(), buffer);
   s.setletter(0, 56, 1, 6, f.getChar('0').getBuff(), buffer);
+  s.setletter(12, 56, 1, 6, f.getChar('0').getBuff(), buffer);
+  // s.fillBuffer(0xAA, buffer);
   s.DrawBuffer(buffer);
+  a.println("done drawing");
+  s.transferCommand(0x03);
+  s.transferCommand(0x10);
+  s.transferCommand(0xB0);
+  for (size_t i = 0; i <= 5; i++)
+  {
+    Serial.print("byte ");
+    Serial.print(i);
+    Serial.print(" = ");
+    Serial.println(s.readRAM(),HEX);
+  }
+
 
 
   // Serial.println("blyat");

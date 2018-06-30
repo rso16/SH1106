@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include<math.h>
 #include "Microcontroller.h"
+#include <util/delay.h>
 #define DEBUG 0
 #define SH1106_ADDR 0x78
 #define oledWidth 128
@@ -24,6 +25,7 @@ class SH1106
         void    init(Microcontroller *m);
         void    sendCommand(uint8_t command);
         void    sendRAM(uint8_t data);
+        uint8_t readRAM();
         void    DrawBuffer(uint8_t buffer[]);
         void    fillBuffer(uint8_t input, uint8_t buffer[]);
         void    printBuffer(uint8_t buffer[]);
